@@ -180,6 +180,7 @@ h2{font-size:clamp(44px,5.6vw,80px)}
   .show{grid-template-columns:90px minmax(0,1fr) 180px;}
   .show .btn{grid-column:2 / -1;justify-self:start}
 }
+@media (max-width:380px){.brand-tag{display:none}}
 /* ---------- Celular ---------- */
 @media (max-width:900px){
   :root{--gutter:20px}
@@ -194,12 +195,18 @@ h2{font-size:clamp(44px,5.6vw,80px)}
   .nav{display:none;position:absolute;top:84px;left:12px;right:12px;flex-direction:column;gap:0;background:rgba(33,33,33,.98);border:1px solid var(--dorado);border-radius:6px;padding:8px 0}
   .nav.open{display:flex}
   .nav a{padding:14px 20px;font-size:17px}
-  .hero{min-height:88vh;padding-top:104px}
+  .hero{min-height:92vh;min-height:92svh;padding-top:104px}
+  .hero .next-show{display:none}
   .video-toggle{top:auto;bottom:16px;right:16px}
   .hero-content{padding-bottom:76px}
   .head-row>svg{display:none}
   .hero-content{flex-direction:column;align-items:stretch;padding-block:0 76px;gap:28px}
-  .hero p{font-size:17px}
+  .hero p{font-size:16px;line-height:1.55}
+  .hero h1{font-size:clamp(38px,11vw,46px);line-height:1.06;text-wrap:balance}
+  .hero-text{gap:18px}
+  .hero::before{background:rgba(18,14,14,.3)}
+  .hero::after{height:70%;background:linear-gradient(to top,rgba(18,14,14,.97) 45%,rgba(18,14,14,0))}
+  .hero-img{object-position:center center}
   .actions .btn{flex:1 1 100%}
   .next-show{width:auto;padding:20px}
   .head-row{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:32px}
@@ -237,12 +244,10 @@ h2{font-size:clamp(44px,5.6vw,80px)}
 <body>
 
 <section class="hero" id="inicio" aria-label="Inicio">
-  <!-- Video de portada (Veo 3.1). Sube patiolo-hero.mp4 (16:9) y patiolo-hero-vertical.mp4 (9:16) junto a este archivo (misma carpeta que index.html).
+  <!-- Video de portada (Veo 3.1). Sube patiolo-hero.mp4 (16:9) y patiolo-hero-vertical.mp4 (9:16) junto a este archivo.
        Mientras no estén, se muestra la foto del patio. -->
-  <video class="hero-img" id="hero-video" autoplay muted loop playsinline preload="metadata" poster="img/patio.jpg" aria-hidden="true">
-    <source src="patiolo-hero-vertical.mp4" type="video/mp4" media="(max-width: 900px) and (orientation: portrait)">
-    <source src="patiolo-hero.mp4" type="video/mp4">
-  </video>
+  <video class="hero-img" id="hero-video" autoplay muted loop playsinline preload="metadata" poster="img/patio.jpg" aria-hidden="true"
+         data-src="patiolo-hero.mp4" data-src-vertical="patiolo-hero-vertical.mp4"></video>
   <span class="sr-only">El patio de Patiolo de noche, con guirnaldas de luces, mesas y un fogón.</span>
   <button class="video-toggle" id="video-toggle" type="button" aria-pressed="false">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
@@ -270,7 +275,7 @@ h2{font-size:clamp(44px,5.6vw,80px)}
     <div class="hero-text">
       <div class="label">Est. 2023</div>
       <h1>Patio de comidas, bar y experiencias.</h1>
-      <p>Cinco cocinas, una barra al centro y shows en vivo los viernes y sábados. Luces, fuego y mesas largas para llegar temprano y quedarse hasta tarde.</p>
+      <p>Una propuesta gastronómica multiformato con variedad de cocinas especializadas, coctelería de autor y servicio de atención personalizada en mesa.</p>
       <div class="actions">
         <a class="btn btn-primary" href="#eventos">Reservar mesa</a>
         <a class="btn btn-ghost" href="#agenda">Ver la agenda</a>
@@ -483,6 +488,15 @@ h2{font-size:clamp(44px,5.6vw,80px)}
 
   // Video de portada: solo se muestra el botón si el video cargó; respeta "reducir movimiento"
   var hv = document.getElementById('hero-video'), vt = document.getElementById('video-toggle');
+  // Elige el video: vertical en celular en modo retrato; si no existe, usa el horizontal
+  (function(){
+    var vertical = window.matchMedia('(max-width: 900px) and (orientation: portrait)').matches;
+    var lista = vertical ? [hv.dataset.srcVertical, hv.dataset.src] : [hv.dataset.src];
+    lista.forEach(function(src){
+      var s = document.createElement('source'); s.src = src; s.type = 'video/mp4'; hv.appendChild(s);
+    });
+    hv.load();
+  })();
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function setPaused(p){
     if (p) { hv.pause(); } else { hv.play().catch(function(){}); }
