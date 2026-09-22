@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patiolo — Patio de comidas, bar y eventos</title>
+<meta name="description" content="Patiolo: patio de comidas con varias cocinas, bar y shows en vivo. Reserva tu mesa o arrienda el patio para tu evento.">
+<meta property="og:title" content="Patiolo — Patio de comidas, bar y eventos">
+<meta property="og:description" content="Patio de comidas, bar y experiencias. Cinco cocinas, una barra y shows en vivo los viernes y sábados.">
+<meta name="theme-color" content="#5F1121">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-60 -40 796 866'%3E%3Crect x='-60' y='-40' width='796' height='866' rx='160' fill='%235F1121'/%3E%3Cpath fill='%23FFF8E1' fill-rule='evenodd' d='M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --burdeos:#5F1121; --crema:#FFF8E1; --carbon:#212121; --dorado:#C5A07F;
+  --noche:#1A1818; --crema-2:#F3E9D2; --texto-suave:#D9CDB8; --gutter:64px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--noche);color:var(--crema);font-family:'Montserrat',system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:var(--dorado)}
+a:hover{color:var(--crema)}
+:focus-visible{outline:2px solid var(--dorado);outline-offset:3px}
+h1,h2,h3{font-family:'Marcellus',serif;font-weight:400;margin:0;line-height:1.02}
+p{margin:0}
+.wrap{padding-inline:var(--gutter)}
+.section{padding-block:110px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.flame{display:block}
+.label{font-size:13px;font-weight:600;letter-spacing:1.4px;color:var(--dorado);text-transform:uppercase}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:4px;font:inherit;font-weight:600;font-size:16px;text-decoration:none;cursor:pointer;border:1px solid transparent;transition:background .2s,color .2s}
+.btn-primary{background:var(--burdeos);color:var(--crema);border-color:var(--dorado)}
+.btn-primary:hover{background:#7A1A2D;color:var(--crema)}
+.btn-ghost{border-color:var(--crema);color:var(--crema);background:transparent}
+.btn-ghost:hover{background:var(--crema);color:var(--carbon)}
+.btn-dark{background:var(--burdeos);color:var(--crema)}
+.btn-dark:hover{background:#7A1A2D;color:var(--crema)}
+
+/* Header */
+.site-header{position:absolute;inset:0 0 auto 0;z-index:10;height:112px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--crema)}
+.brand:hover{color:var(--crema)}
+.brand-name{display:block;font-weight:800;font-size:26px;line-height:1;letter-spacing:1px}
+.brand-tag{display:block;margin-top:4px;font-size:10px;font-weight:600;letter-spacing:1.2px;color:#E6D5BF}
+.nav{display:flex;gap:34px;font-size:15px;font-weight:500}
+.nav a{color:var(--crema);text-decoration:none}
+.nav a:hover{color:var(--dorado)}
+.menu-btn{display:none;width:48px;height:48px;border-radius:4px;border:1px solid rgba(255,248,225,.5);background:transparent;color:var(--crema);align-items:center;justify-content:center;cursor:pointer}
+
+/* Hero */
+.video-toggle{position:absolute;z-index:3;right:var(--gutter);top:128px;display:none;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,248,225,.45);background:rgba(33,33,33,.6);color:var(--crema);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.video-toggle:hover{border-color:var(--dorado)}
+.hero.has-video .video-toggle{display:inline-flex}
+.hero{position:relative;min-height:900px;overflow:hidden;display:flex;align-items:flex-end}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%}
+.hero::before{content:"";position:absolute;inset:0;background:rgba(18,14,14,.35);z-index:1}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:560px;background:linear-gradient(to top,rgba(18,14,14,.94),rgba(18,14,14,0));z-index:1}
+.hero-content{position:relative;z-index:2;width:100%;padding-block:0 80px;display:flex;justify-content:space-between;align-items:flex-end;gap:64px}
+.hero-text{max-width:820px;display:flex;flex-direction:column;gap:28px}
+.hero h1{font-size:clamp(56px,7.3vw,104px);line-height:1}
+.hero p{max-width:600px;font-size:20px;color:#EDE3D1}
+.actions{display:flex;flex-wrap:wrap;gap:16px}
+.next-show{width:360px;flex-shrink:0;background:rgba(33,33,33,.92);border:1px solid var(--dorado);border-radius:6px;padding:28px;display:flex;flex-direction:column;gap:16px}
+.date{flex-shrink:0;width:72px;height:80px;border:1px solid var(--dorado);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.date small{font-size:12px;font-weight:600;color:var(--dorado)}
+.date b{font-family:'Marcellus',serif;font-weight:400;font-size:30px;line-height:1}
+.show-row{display:flex;gap:18px;align-items:center}
+.show-title{font-family:'Marcellus',serif;font-size:26px;line-height:1.15}
+.muted{color:var(--texto-suave);font-size:14px}
+
+/* Secciones claras */
+.light{background:var(--crema);color:var(--carbon)}
+.light h2,.light h3{color:var(--burdeos)}
+.light a:not(.btn){color:var(--burdeos)}
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:48px;margin-bottom:52px}
+.head-row p{max-width:460px;font-size:18px}
+.dark .head-row p{color:var(--texto-suave)}
+h2{font-size:clamp(44px,5.6vw,80px)}
+
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
+.pillar{border-top:2px solid var(--burdeos);padding-top:24px;display:flex;flex-direction:column;gap:14px}
+.pillar h3{font-size:36px}
+.pillar p{font-size:18px}
+
+/* Agenda */
+.agenda{background:var(--burdeos)}
+.agenda .head-row p{color:#F0E3D2}
+.shows{list-style:none;margin:0;padding:0;border-top:1px solid rgba(197,160,127,.5)}
+.show{display:grid;grid-template-columns:110px minmax(0,1fr) 220px 180px;gap:32px;align-items:center;padding:26px 0;border-bottom:1px solid rgba(197,160,127,.5)}
+.show-date{display:flex;flex-direction:column;line-height:1;gap:4px}
+.show-date small{font-size:14px;font-weight:600;letter-spacing:1px;color:var(--dorado)}
+.show-date b{font-family:'Marcellus',serif;font-weight:400;font-size:52px}
+.show h3{font-size:32px;line-height:1.1}
+.show .kind{font-size:15px;color:var(--dorado);margin-top:6px}
+.show .info{font-size:16px;color:#F0E3D2}
+.show .btn{border-color:var(--dorado);color:var(--crema)}
+.show .btn:hover{background:var(--crema);color:var(--burdeos)}
+
+/* El patio */
+.patio{background:var(--carbon)}
+.gallery{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:250px 250px;gap:20px}
+.gallery figure{margin:0;position:relative;border-radius:6px;overflow:hidden}
+.gallery figure:first-child{grid-row:span 2}
+.gallery img{width:100%;height:100%;object-fit:cover}
+.gallery figcaption{position:absolute;inset:auto 0 0 0;padding:14px 20px;background:rgba(33,33,33,.85);font-family:'Marcellus',serif;font-size:20px}
+.gallery figure:first-child figcaption{font-size:24px;padding:20px 24px}
+
+/* Cocinas */
+.kitchens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.kitchen{background:var(--carbon);border:1px solid rgba(197,160,127,.35);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.ph{background:#2A2626;display:flex;align-items:center;justify-content:center;font-size:13px;color:#B8AC98;border:1px dashed rgba(197,160,127,.4)}
+.kimg{position:relative;height:230px;background:#262222;border-bottom:1px solid rgba(197,160,127,.35);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.kimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.kimg .mono{color:var(--dorado);opacity:.45}
+.kitchen-body{padding:20px 24px 26px;display:flex;flex-direction:column;gap:6px}
+.kitchen-body .type{font-size:12px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;color:var(--dorado)}
+.kitchen-body h3{font-size:30px;line-height:1.1}
+.kitchen-body p{font-size:15px;line-height:1.55;color:var(--texto-suave)}
+.kitchen.is-bar{background:var(--burdeos);border-color:var(--dorado)}
+.kitchen.is-bar .kimg{background:#4C0D1A}
+.kitchen.is-bar .kitchen-body p{color:#F0E3D2}
+
+/* Bar */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:80px;align-items:center}
+.bar-photo{height:620px;border-radius:6px;overflow:hidden}
+.bar-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%}
+.stack{display:flex;flex-direction:column;gap:28px;align-items:flex-start}
+.stack>p{max-width:520px;font-size:19px}
+.facts{margin:0;display:grid;grid-template-columns:180px minmax(0,1fr);row-gap:14px;font-size:17px;border-top:1px solid rgba(95,17,33,.3);padding-top:24px;width:100%}
+.facts dt{font-weight:700;color:var(--burdeos)}
+.facts dd{margin:0}
+
+/* Para llevar */
+.takeaway{background:var(--crema-2);color:var(--carbon);padding-block:100px}
+.takeaway h2{color:var(--burdeos)}
+.takeaway .split{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+.pack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.pack img{width:100%;height:380px;object-fit:cover;border-radius:6px}
+
+/* Eventos */
+.events{background:var(--burdeos)}
+.events .split{align-items:start}
+.events .stack>p{color:#F0E3D2}
+.ticks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.ticks li{display:flex;gap:14px;align-items:center}
+.form{background:var(--crema);color:var(--carbon);border-radius:6px;padding:40px;display:flex;flex-direction:column;gap:20px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-size:14px;font-weight:600}
+.field input,.field select,.field textarea{min-height:48px;padding:10px 14px;border:1px solid #8C7F70;border-radius:4px;font:inherit;font-size:16px;background:#fff;color:var(--carbon);width:100%}
+.field textarea{resize:vertical}
+.form .note{font-size:14px;color:#5C5249}
+.error{font-size:14px;color:#9B1C1C;min-height:1em}
+
+/* Ubicación */
+.location{background:var(--carbon)}
+.location .split{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);align-items:stretch}
+.hours{margin:0;display:grid;grid-template-columns:190px minmax(0,1fr);row-gap:12px;font-size:17px;border-top:1px solid rgba(197,160,127,.4);padding-top:24px;width:100%}
+.hours dt{font-weight:600;color:var(--dorado)}
+.hours dd{margin:0;color:#E6DCCB}
+.map{min-height:480px;border-radius:6px}
+
+/* Footer */
+.footer{background:var(--burdeos);padding-block:72px 44px;display:flex;flex-direction:column;align-items:center;gap:40px;text-align:center}
+.footer-name{font-weight:800;font-size:clamp(44px,6vw,72px);line-height:1;letter-spacing:3px}
+.footer-tag{font-size:14px;font-weight:600;letter-spacing:2px;color:#E6D5BF;margin-top:14px}
+.footer-bar{align-self:stretch;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-size:15px;border-top:1px solid rgba(197,160,127,.5);padding-top:24px;color:#F0E3D2}
+.footer-bar nav{display:flex;gap:28px;flex-wrap:wrap}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1100px){
+  :root{--gutter:40px}
+  .nav{gap:22px;font-size:14px}
+  .show{grid-template-columns:90px minmax(0,1fr) 180px;}
+  .show .btn{grid-column:2 / -1;justify-self:start}
+}
+/* ---------- Celular ---------- */
+@media (max-width:900px){
+  :root{--gutter:20px}
+  body{font-size:16px}
+  .section{padding-block:64px}
+  .site-header{height:84px}
+  .brand svg{width:32px;height:38px}
+  .brand-name{font-size:22px}
+  .brand-tag{font-size:9px}
+  .menu-btn{display:inline-flex}
+  .header-cta{display:none}
+  .nav{display:none;position:absolute;top:84px;left:12px;right:12px;flex-direction:column;gap:0;background:rgba(33,33,33,.98);border:1px solid var(--dorado);border-radius:6px;padding:8px 0}
+  .nav.open{display:flex}
+  .nav a{padding:14px 20px;font-size:17px}
+  .hero{min-height:88vh;padding-top:104px}
+  .video-toggle{top:auto;bottom:16px;right:16px}
+  .hero-content{padding-bottom:76px}
+  .head-row>svg{display:none}
+  .hero-content{flex-direction:column;align-items:stretch;padding-block:0 76px;gap:28px}
+  .hero p{font-size:17px}
+  .actions .btn{flex:1 1 100%}
+  .next-show{width:auto;padding:20px}
+  .head-row{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:32px}
+  .pillars{grid-template-columns:1fr;gap:28px}
+  .pillar h3{font-size:30px}
+  .show{grid-template-columns:64px minmax(0,1fr);gap:10px 16px;padding:20px 0}
+  .show-date b{font-size:36px}
+  .show h3{font-size:22px}
+  .show .info{grid-column:2;font-size:14px}
+  .show .btn{grid-column:2;min-height:44px;padding:0 18px;font-size:14px}
+  .gallery{grid-template-columns:1fr;grid-template-rows:280px 200px 200px}
+  .gallery figure:first-child{grid-row:auto}
+  .kitchens{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .kimg{height:120px}
+  .kimg .mono{width:32px;height:38px}
+  .kitchen-body{gap:4px;padding:14px 14px 16px}
+  .kitchen-body .type{font-size:10px;letter-spacing:1px}
+  .kitchen-body h3{font-size:20px}
+  .kitchen-body p{font-size:13px;line-height:1.45}
+  .split,.takeaway .split,.location .split{grid-template-columns:1fr;gap:36px}
+  .bar-photo{height:380px;order:-1}
+  .takeaway{padding-block:64px}
+  .pack img{height:220px}
+  .facts,.hours{grid-template-columns:1fr;row-gap:2px}
+  .facts dd,.hours dd{margin-bottom:12px}
+  .stack .btn{width:100%}
+  .form{padding:22px}
+  .form-grid{grid-template-columns:1fr;gap:16px}
+  .map{min-height:240px}
+  .footer-bar{flex-direction:column;text-align:center}
+  .footer-bar nav{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<section class="hero" id="inicio" aria-label="Inicio">
+  <!-- Video de portada (Veo 3.1). Sube patiolo-hero.mp4 (16:9) y patiolo-hero-vertical.mp4 (9:16) junto a este archivo (misma carpeta que index.html).
+       Mientras no estén, se muestra la foto del patio. -->
+  <video class="hero-img" id="hero-video" autoplay muted loop playsinline preload="metadata" poster="img/patio.jpg" aria-hidden="true">
+    <source src="patiolo-hero-vertical.mp4" type="video/mp4" media="(max-width: 900px) and (orientation: portrait)">
+    <source src="patiolo-hero.mp4" type="video/mp4">
+  </video>
+  <span class="sr-only">El patio de Patiolo de noche, con guirnaldas de luces, mesas y un fogón.</span>
+  <button class="video-toggle" id="video-toggle" type="button" aria-pressed="false">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+    <span>Pausar video</span>
+  </button>
+  <header class="site-header wrap">
+    <a class="brand" href="#inicio" aria-label="Patiolo, inicio">
+      <svg class="flame" width="40" height="47" viewBox="0 0 676 786" aria-hidden="true"><path fill="#FFF8E1" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg>
+      <span><span class="brand-name">PATIOLO</span><span class="brand-tag">PATIO DE COMIDAS · BAR · EVENTOS</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="#cocinas">Cocinas</a>
+      <a href="#agenda">Agenda</a>
+      <a href="#bar">Bar</a>
+      <a href="#llevar">Para llevar</a>
+      <a href="#eventos">Eventos privados</a>
+      <a href="#ubicacion">Cómo llegar</a>
+    </nav>
+    <a class="btn btn-primary header-cta" href="#eventos">Reservar mesa</a>
+    <button class="menu-btn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </header>
+  <div class="hero-content wrap">
+    <div class="hero-text">
+      <div class="label">Est. 2023</div>
+      <h1>Patio de comidas, bar y experiencias.</h1>
+      <p>Cinco cocinas, una barra al centro y shows en vivo los viernes y sábados. Luces, fuego y mesas largas para llegar temprano y quedarse hasta tarde.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#eventos">Reservar mesa</a>
+        <a class="btn btn-ghost" href="#agenda">Ver la agenda</a>
+      </div>
+    </div>
+    <article class="next-show" aria-label="Próximo show">
+      <div class="label">Este viernes en el escenario</div>
+      <div class="show-row">
+        <div class="date"><small>VIE</small><b>[DD]</b></div>
+        <div>
+          <div class="show-title">[NOMBRE DEL ARTISTA]</div>
+          <div class="muted">[GÉNERO] · [HORA]</div>
+        </div>
+      </div>
+      <a href="#agenda" style="font-weight:600;font-size:15px">Ver toda la agenda</a>
+    </article>
+  </div>
+</section>
+
+<main>
+<section class="dark section wrap" id="cocinas" aria-labelledby="cocinas-t">
+  <div class="head-row">
+    <h2 id="cocinas-t">Las cocinas</h2>
+    <p>Cinco cocinas y una barra. Pides en la que quieras y te llaman cuando está listo.</p>
+  </div>
+  <div class="kitchens">
+    <article class="kitchen"><div class="kimg"><svg class="mono" width="48" height="56" viewBox="0 0 676 786" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg><img src="img/local-bacos.jpg" alt="Fachada del local Baco's Burger en el patio" onerror="this.remove()"></div><div class="kitchen-body"><span class="type">Hamburguesas</span><h3>Baco's Burger</h3><p>Smash burgers a la plancha, pan brioche y salsas de la casa.</p></div></article>
+    <article class="kitchen"><div class="kimg"><svg class="mono" width="48" height="56" viewBox="0 0 676 786" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg><img src="img/local-nova.jpg" alt="Fachada de la cafetería Nova Éklat" onerror="this.remove()"></div><div class="kitchen-body"><span class="type">Cafetería</span><h3>Nova Éklat</h3><p>Café de especialidad, pastelería y brunch para empezar temprano.</p></div></article>
+    <article class="kitchen"><div class="kimg"><svg class="mono" width="48" height="56" viewBox="0 0 676 786" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg><img src="img/local-chanchis.jpg" alt="Fachada del local Chanchis" onerror="this.remove()"></div><div class="kitchen-body"><span class="type">Papas fritas con toppings</span><h3>Chanchis</h3><p>Papas cortadas a mano con cheddar, pulled pork, chorizo y más.</p></div></article>
+    <article class="kitchen"><div class="kimg"><svg class="mono" width="48" height="56" viewBox="0 0 676 786" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg><img src="img/local-ohsushi.jpg" alt="Fachada del local Oh Sushi" onerror="this.remove()"></div><div class="kitchen-body"><span class="type">Sushi</span><h3>Oh Sushi</h3><p>Rolls, nigiris y tablas para compartir, armados al momento.</p></div></article>
+    <article class="kitchen"><div class="kimg"><svg class="mono" width="48" height="56" viewBox="0 0 676 786" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg><img src="img/local-ohramen.jpg" alt="Fachada del local Oh Ramen" onerror="this.remove()"></div><div class="kitchen-body"><span class="type">Ramen</span><h3>Oh Ramen</h3><p>Caldos de cocción lenta, fideos y toppings a elección.</p></div></article>
+    <article class="kitchen is-bar"><div class="kimg"><svg class="mono" width="48" height="56" viewBox="0 0 676 786" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg><img src="img/local-barra.jpg" alt="Barra de tragos de Patiolo" onerror="this.remove()"></div><div class="kitchen-body"><span class="type">Tragos y schop</span><h3>La Barra</h3><p>Coctelería de autor, schop de barril y vinos, al centro del patio.</p></div></article>
+  </div>
+</section>
+
+<section class="light section wrap" aria-labelledby="que-hay">
+  <div class="head-row">
+    <h2 id="que-hay" style="font-size:clamp(40px,4.5vw,64px);max-width:760px">Tres cosas en un mismo patio</h2>
+    <svg class="flame" width="56" height="65" viewBox="0 0 676 786" aria-hidden="true"><path fill="#5F1121" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg>
+  </div>
+  <div class="pillars">
+    <div class="pillar"><h3>Cocinas</h3><p>Cada uno pide lo que le gusta y todos comen en la misma mesa.</p></div>
+    <div class="pillar"><h3>Bar</h3><p>Schop de barril, vinos y cócteles, con la barra en el centro del patio.</p></div>
+    <div class="pillar"><h3>Eventos</h3><p>Música en vivo, stand-up y celebraciones privadas bajo las luces.</p></div>
+  </div>
+</section>
+
+<section class="agenda section wrap" id="agenda" aria-labelledby="agenda-t">
+  <div class="head-row">
+    <h2 id="agenda-t" style="font-size:clamp(56px,6.7vw,96px)">Agenda</h2>
+    <p>Shows en vivo todos los viernes y sábados. Las mesas frente al escenario se reservan primero.</p>
+  </div>
+  <ul class="shows">
+    <li class="show"><div class="show-date"><small>VIE</small><b>[DD]</b></div><div><h3>[NOMBRE DEL SHOW]</h3><div class="kind">Música en vivo</div></div><div class="info">Desde las [HORA]<br>Entrada [PRECIO]</div><a class="btn" href="#eventos">Reservar mesa</a></li>
+    <li class="show"><div class="show-date"><small>SÁB</small><b>[DD]</b></div><div><h3>[NOMBRE DEL SHOW]</h3><div class="kind">Fiesta con DJ</div></div><div class="info">Desde las [HORA]<br>Entrada [PRECIO]</div><a class="btn" href="#eventos">Reservar mesa</a></li>
+    <li class="show"><div class="show-date"><small>VIE</small><b>[DD]</b></div><div><h3>[NOMBRE DEL SHOW]</h3><div class="kind">Stand-up</div></div><div class="info">Desde las [HORA]<br>Entrada [PRECIO]</div><a class="btn" href="#eventos">Reservar mesa</a></li>
+    <li class="show"><div class="show-date"><small>SÁB</small><b>[DD]</b></div><div><h3>[NOMBRE DEL SHOW]</h3><div class="kind">Noche de tributo</div></div><div class="info">Desde las [HORA]<br>Entrada [PRECIO]</div><a class="btn" href="#eventos">Reservar mesa</a></li>
+  </ul>
+</section>
+
+<section class="patio dark section wrap" aria-labelledby="patio-t">
+  <div class="head-row">
+    <h2 id="patio-t">El patio</h2>
+    <p>Pensado para quedarse: un fogón para las noches frías, mesas que se juntan para grupos grandes y un muro verde para la foto.</p>
+  </div>
+  <div class="gallery">
+    <figure><img src="img/fogata.jpg" alt="Sillones alrededor del fogón bajo guirnaldas de luces"><figcaption>El fogón</figcaption></figure>
+    <figure><img src="img/bancas.jpg" alt="Mesas y bancas de madera en el patio"><figcaption>Mesas para grupos</figcaption></figure>
+    <figure><img src="img/muro.jpg" alt="Muro de plantas iluminado"><figcaption>Muro verde</figcaption></figure>
+  </div>
+</section>
+
+<section class="light section wrap" id="bar" aria-labelledby="bar-t">
+  <div class="split">
+    <div class="bar-photo"><img src="img/garzon.jpg" alt="Garzón de Patiolo con delantal burdeos en el patio"></div>
+    <div class="stack">
+      <h2 id="bar-t">El bar</h2>
+      <p>La barra está al centro del patio y también te atendemos en la mesa, sin perderte el show.</p>
+      <dl class="facts">
+        <dt>Happy hour</dt><dd>[DÍAS Y HORARIO]</dd>
+        <dt>De barril</dt><dd>[CANTIDAD] schops que van rotando</dd>
+        <dt>Coctelería</dt><dd>[TRAGOS DESTACADOS]</dd>
+      </dl>
+      <a class="btn btn-dark" href="#">Ver la carta</a>
+    </div>
+  </div>
+</section>
+
+<section class="takeaway wrap" id="llevar" aria-labelledby="llevar-t">
+  <div class="split">
+    <div class="stack">
+      <h2 id="llevar-t" style="font-size:clamp(44px,5vw,72px)">Para llevar</h2>
+      <p>Pide de cualquiera de las cocinas y llévatelo en envases de papel y cartón, con cubiertos de madera.</p>
+      <a class="btn btn-dark js-wa" href="#" data-msg="Hola Patiolo, quiero hacer un pedido para llevar.">Pedir por WhatsApp</a>
+    </div>
+    <div class="pack">
+      <img src="img/bolsa.jpg" alt="Bolsa de papel burdeos con el logo de Patiolo">
+      <img src="img/caja.jpg" alt="Caja de comida de cartón con sello dorado de Patiolo">
+    </div>
+  </div>
+</section>
+
+<section class="events section wrap" id="eventos" aria-labelledby="eventos-t">
+  <div class="split">
+    <div class="stack">
+      <h2 id="eventos-t">Eventos privados</h2>
+      <p>Cumpleaños, fiestas de empresa, lanzamientos y cenas. El patio completo o un sector, con cocina, bar y escenario para tu grupo.</p>
+      <ul class="ticks">
+        <li><svg class="flame" width="16" height="19" viewBox="0 0 676 786" aria-hidden="true"><path fill="#C5A07F" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg>Desde [N] hasta [N] personas</li>
+        <li><svg class="flame" width="16" height="19" viewBox="0 0 676 786" aria-hidden="true"><path fill="#C5A07F" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg>Mobiliario modular según el tipo de evento</li>
+        <li><svg class="flame" width="16" height="19" viewBox="0 0 676 786" aria-hidden="true"><path fill="#C5A07F" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg>Escenario y sonido para tu propio show</li>
+      </ul>
+    </div>
+    <form class="form" id="form-evento" novalidate>
+      <div class="form-grid">
+        <div class="field"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" type="text" autocomplete="name" placeholder="Camila Rojas" required></div>
+        <div class="field"><label for="f-tel">WhatsApp</label><input id="f-tel" name="tel" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" required></div>
+        <div class="field"><label for="f-fecha">Fecha</label><input id="f-fecha" name="fecha" type="date" required></div>
+        <div class="field"><label for="f-pers">Personas</label><select id="f-pers" name="personas"><option>Hasta 20</option><option>20 a 50</option><option>50 a 100</option><option>Más de 100</option></select></div>
+      </div>
+      <div class="field"><label for="f-tipo">Tipo de evento</label><select id="f-tipo" name="tipo"><option>Reserva de mesa</option><option>Cumpleaños</option><option>Evento de empresa</option><option>Lanzamiento</option><option>Cena privada</option><option>Otro</option></select></div>
+      <div class="field"><label for="f-msg">Cuéntanos la idea</label><textarea id="f-msg" name="mensaje" rows="4" placeholder="Queremos el sector del fogón para un cumpleaños de 40 personas."></textarea></div>
+      <p class="error" id="f-error" role="alert"></p>
+      <button class="btn btn-dark" type="submit" style="min-height:56px;font-size:17px">Enviar solicitud</button>
+      <p class="note">Se abre WhatsApp con tu solicitud lista para enviar.</p>
+    </form>
+  </div>
+</section>
+
+<section class="location section wrap" id="ubicacion" aria-labelledby="ubi-t">
+  <div class="split">
+    <div class="stack">
+      <h2 id="ubi-t" style="font-size:clamp(44px,5vw,72px)">Cómo llegar</h2>
+      <p style="font-size:21px;line-height:1.5">[DIRECCIÓN]<br><span style="color:var(--texto-suave)">[COMUNA, CIUDAD]</span></p>
+      <dl class="hours">
+        <dt>Lunes a miércoles</dt><dd>[HORARIO]</dd>
+        <dt>Jueves</dt><dd>[HORARIO]</dd>
+        <dt>Viernes y sábado</dt><dd>[HORARIO]</dd>
+        <dt>Domingo</dt><dd>[HORARIO]</dd>
+      </dl>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://maps.google.com/?q=[DIRECCIÓN]" target="_blank" rel="noopener">Abrir en Google Maps</a>
+        <a class="btn btn-ghost js-wa" href="#" data-msg="Hola Patiolo, tengo una consulta.">Escríbenos por WhatsApp</a>
+      </div>
+    </div>
+    <!-- Reemplaza este bloque por el iframe de Google Maps: Compartir > Insertar un mapa -->
+    <div class="map ph">[MAPA]</div>
+  </div>
+</section>
+</main>
+
+<footer class="footer wrap">
+  <div>
+    <svg class="flame" width="96" height="112" viewBox="0 0 676 786" aria-hidden="true" style="margin:0 auto 18px"><path fill="#FFF8E1" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg>
+    <div class="footer-name">PATIOLO</div>
+    <div class="footer-tag">PATIO DE COMIDAS · BAR · EVENTOS | EST. 2023</div>
+  </div>
+  <div class="footer-bar">
+    <span>Patio de comidas, bar y experiencias.</span>
+    <nav aria-label="Redes">
+      <a href="https://instagram.com/[USUARIO]" target="_blank" rel="noopener">Instagram [@USUARIO]</a>
+      <a class="js-wa" href="#" data-msg="Hola Patiolo">WhatsApp [+56 9 XXXX XXXX]</a>
+    </nav>
+    <span>© <span id="year">2026</span> Patiolo</span>
+  </div>
+</footer>
+
+<script>
+  // Número de WhatsApp del local: solo dígitos, con código de país (ej. 56912345678)
+  var WHATSAPP = '56900000000';
+
+  function waLink(msg){ return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg); }
+
+  document.querySelectorAll('.js-wa').forEach(function(a){
+    a.href = waLink(a.getAttribute('data-msg') || 'Hola Patiolo');
+    a.target = '_blank'; a.rel = 'noopener';
+  });
+
+  // Menú móvil
+  var btn = document.querySelector('.menu-btn'), nav = document.getElementById('nav');
+  btn.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  });
+  nav.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ nav.classList.remove('open'); btn.setAttribute('aria-expanded', false); });
+  });
+
+  // Formulario → WhatsApp
+  var form = document.getElementById('form-evento'), err = document.getElementById('f-error');
+  form.addEventListener('input', function(){ err.textContent = ''; });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var d = new FormData(form);
+    if (!d.get('nombre').trim() || !d.get('tel').trim() || !d.get('fecha')) {
+      err.textContent = 'Completa nombre, WhatsApp y fecha.';
+      return;
+    }
+    var msg = 'Hola Patiolo, quiero cotizar un evento.\n' +
+      'Nombre: ' + d.get('nombre') + '\n' +
+      'WhatsApp: ' + d.get('tel') + '\n' +
+      'Fecha: ' + d.get('fecha') + '\n' +
+      'Personas: ' + d.get('personas') + '\n' +
+      'Tipo: ' + d.get('tipo') + '\n' +
+      (d.get('mensaje') ? 'Idea: ' + d.get('mensaje') : '');
+    window.open(waLink(msg), '_blank', 'noopener');
+  });
+
+
+  // Video de portada: solo se muestra el botón si el video cargó; respeta "reducir movimiento"
+  var hv = document.getElementById('hero-video'), vt = document.getElementById('video-toggle');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function setPaused(p){
+    if (p) { hv.pause(); } else { hv.play().catch(function(){}); }
+    vt.setAttribute('aria-pressed', p);
+    vt.querySelector('span').textContent = p ? 'Reproducir video' : 'Pausar video';
+    vt.querySelector('svg').innerHTML = p ? '<path d="M8 5v14l11-7z"/>' : '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
+  }
+  function onReady(){
+    document.getElementById('inicio').classList.add('has-video');
+    if (reduce) setPaused(true);
+  }
+  if (hv.readyState >= 2) onReady(); else hv.addEventListener('loadeddata', onReady, { once: true });
+  vt.addEventListener('click', function(){ setPaused(!hv.paused); });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
