@@ -1,0 +1,5 @@
+Fotos de los productos de las cartas.
+El nombre de cada archivo debe coincidir con el campo "foto" de data/cartas.js
+Ejemplo: bacos-clasica.jpg
+Recomendado: cuadradas, 600x600 px, JPG bajo 200 KB.
+Si falta una foto, la carta muestra la llama de la marca.
