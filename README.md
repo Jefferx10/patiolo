@@ -17,3 +17,12 @@ Deben pesar menos de 5 MB cada uno.
 - Framework preset: None
 - Build command: vacío
 - Build output directory: `public`
+
+## Reservas conectadas a la app Patiolo
+La sección **Reserva tu mesa** (`#reservar`) y el formulario de **Eventos privados** envían los datos a la app
+(Firebase, función `reservasWeb`). Las reservas aparecen al instante en la app, menú **Reservas**.
+
+- Dirección del servicio: variable `API_RESERVAS` en el `<script>` de `index.html`.
+- Horarios, capacidad, días bloqueados y confirmación automática se configuran en la app: **Configuración → Reservas**.
+- Dominios aceptados: `patiolo.cl` (y subdominios), `*.pages.dev` y los que agregues en esa misma pantalla.
+- Si el servicio no responde, los formularios ofrecen enviar la solicitud por WhatsApp.
