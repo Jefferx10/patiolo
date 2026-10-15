@@ -35,5 +35,5 @@ descripciones, categorías, destacados, ofertas y agotados se administran en la 
 
 - La dirección de cada carta es `carta.html?local=<slug>`; el slug sale del nombre del local
   ("Baco's Burger" → `bacos-burger`) o del campo **Dirección de su carta** en Locales → Editar → Página web.
-- `data/cartas.js` queda como **respaldo**: se usa si la app no responde o si un local aún no tiene productos cargados.
+- La sección **Las cocinas** de la portada también se arma desde la app: cada local activo con productos visibles en la web tiene su tarjeta y su carta. Foto de la tarjeta: la del local en la app (Locales → Editar → Página web) o, si no tiene, `img/local-<nombre>.jpg` de los locales originales.
 - Fotos: enlace `https://…` o nombre de un archivo subido a `img/carta/`.
