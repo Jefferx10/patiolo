@@ -26,3 +26,14 @@ La sección **Reserva tu mesa** (`#reservar`) y el formulario de **Eventos priva
 - Horarios, capacidad, días bloqueados y confirmación automática se configuran en la app: **Configuración → Reservas**.
 - Dominios aceptados: `patiolo.cl` (y subdominios), `*.pages.dev` y los que agregues en esa misma pantalla.
 - Si el servicio no responde, los formularios ofrecen enviar la solicitud por WhatsApp.
+
+## Carta conectada a la app
+
+`carta.html` lee la carta en vivo desde la app Patiolo (`cartaWeb`): locales, productos, precios,
+descripciones, categorías, destacados, ofertas y agotados se administran en la app (menú **Productos** →
+**Carta web**). Los cambios se ven en la página en pocos minutos.
+
+- La dirección de cada carta es `carta.html?local=<slug>`; el slug sale del nombre del local
+  ("Baco's Burger" → `bacos-burger`) o del campo **Dirección de su carta** en Locales → Editar → Página web.
+- `data/cartas.js` queda como **respaldo**: se usa si la app no responde o si un local aún no tiene productos cargados.
+- Fotos: enlace `https://…` o nombre de un archivo subido a `img/carta/`.
