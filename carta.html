@@ -113,12 +113,9 @@ main{padding-block:40px 80px}
   <div class="otros" id="otros"></div>
 </footer>
 
-<script src="data/cartas.js"></script>
 <script>
-  // La carta viene de la app Patiolo (productos, precios, agotados). data/cartas.js queda como respaldo
-  // por si la app no responde: así la página nunca queda vacía.
+  // La carta viene de la app Patiolo (productos, precios, agotados).
   var API_CARTA = 'https://southamerica-west1-patiolo-produccion.cloudfunctions.net/cartaWeb';
-  var respaldo = window.CARTAS || {}; // antes de reutilizar el nombre CARTAS
 
   var slug = new URLSearchParams(location.search).get('local');
   var $ = function(id){ return document.getElementById(id); };
@@ -140,8 +137,9 @@ main{padding-block:40px 80px}
     local = CARTAS[slug];
     if (!local) {
       document.title = 'Carta — Patiolo';
-      $('contenido').innerHTML = '<div class="aviso"><h2>Elige un local</h2>' +
-        '<p>Estas son las cartas disponibles en el patio.</p>' +
+      var hay = Object.keys(CARTAS).length;
+      $('contenido').innerHTML = '<div class="aviso"><h2>' + (!hay ? 'Pronto publicaremos las cartas' : slug ? 'Esta carta no está disponible' : 'Elige un local') + '</h2>' +
+        '<p>' + (!hay ? 'Vuelve en unos días o pregunta en el patio.' : 'Estas son las cartas disponibles en el patio.') + '</p>' +
         '<div class="otros">' + Object.keys(CARTAS).map(function(k){
           return '<a href="carta.html?local=' + k + '">' + texto(CARTAS[k].nombre) + '</a>';
         }).join('') + '</div></div>';
@@ -194,14 +192,11 @@ main{padding-block:40px 80px}
   var espera = setTimeout(function(){ if (ctl) ctl.abort(); }, 6000);
   fetch(API_CARTA, ctl ? { signal: ctl.signal } : {})
     .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(function(d){
-      var desdeApp = (d && d.locales) || {};
-      // Si un local aún no tiene productos en la app, se muestra su carta de respaldo.
-      var todo = {}; Object.keys(desdeApp).forEach(function(k){ todo[k] = desdeApp[k]; });
-      if (slug && !todo[slug] && respaldo[slug]) todo[slug] = respaldo[slug];
-      mostrar(Object.keys(todo).length ? todo : respaldo);
+    .then(function(d){ mostrar((d && d.locales) || {}); })
+    .catch(function(){
+      $('contenido').innerHTML = '<div class="aviso"><h2>Carta no disponible</h2><p>No pudimos cargar la carta en este momento. Intenta de nuevo en unos minutos.</p></div>';
+      var t = $('tabs'); if (t) t.remove();
     })
-    .catch(function(){ mostrar(respaldo); })
     .then(function(){ clearTimeout(espera); });
 </script>
 </body>
