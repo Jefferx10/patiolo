@@ -37,3 +37,16 @@ descripciones, categorías, destacados, ofertas y agotados se administran en la 
   ("Baco's Burger" → `bacos-burger`) o del campo **Dirección de su carta** en Locales → Editar → Página web.
 - La sección **Las cocinas** de la portada también se arma desde la app: cada local activo con productos visibles en la web tiene su tarjeta y su carta. Foto de la tarjeta: la del local en la app (Locales → Editar → Página web) o, si no tiene, `img/local-<nombre>.jpg` de los locales originales.
 - Fotos: enlace `https://…` o nombre de un archivo subido a `img/carta/`.
+
+## Mi cuenta (programa de fidelidad)
+
+`cuenta.html` es la cuenta del cliente: inicia sesión con **Google**, con un **código al correo** o con
+**correo y contraseña**, y ve su tarjeta de compras, misiones, cupones e historial de pedidos (todo viene
+de la app Patiolo, menú **Fidelidad**). En caja lo identifican por RUT o teléfono.
+
+- El código de la página está en `src/cuenta.js` y se publica empaquetado en `js/cuenta.js`
+  (incluye el SDK de Firebase, sin depender de otros sitios). Para regenerarlo después de cambiar `src/cuenta.js`:
+  `npx esbuild src/cuenta.js --bundle --minify --format=esm --target=es2019 --outfile=js/cuenta.js`
+  (con `firebase` instalado: `npm install firebase@12 esbuild`).
+- En Firebase → Authentication → Settings → **Dominios autorizados** deben estar `patiolo.cl` y `www.patiolo.cl`
+  (y el dominio `*.pages.dev` si se prueba ahí) para que funcione "Continuar con Google".
