@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi cuenta — Patiolo</title>
+<meta name="description" content="Tu cuenta Patiolo: premios, cupones, misiones e historial de pedidos.">
+<meta name="theme-color" content="#5F1121">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-60 -40 796 866'%3E%3Crect x='-60' y='-40' width='796' height='866' rx='160' fill='%235F1121'/%3E%3Cpath fill='%23FFF8E1' fill-rule='evenodd' d='M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--burdeos:#5F1121;--crema:#FFF8E1;--carbon:#212121;--dorado:#C5A07F;--noche:#1A1818;--texto-suave:#D9CDB8;--ok:#7FC79A;--gutter:64px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--noche);color:var(--crema);font-family:'Montserrat',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--dorado)}
+:focus-visible{outline:2px solid var(--dorado);outline-offset:3px}
+h1,h2,h3{font-family:'Marcellus',serif;font-weight:400;margin:0;line-height:1.05}
+p{margin:0}
+.wrap{padding-inline:var(--gutter);max-width:1280px;margin-inline:auto}
+.label{font-size:12px;font-weight:600;letter-spacing:1.4px;color:var(--dorado);text-transform:uppercase}
+.suave{color:var(--texto-suave)}
+.chico{font-size:13px}
+.top{background:var(--burdeos);padding-block:20px}
+.top-bar{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--crema)}
+.brand-name{font-weight:800;font-size:20px;letter-spacing:1px;line-height:1}
+.volver{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--dorado);border-radius:4px;color:var(--crema);font-size:14px;font-weight:600;text-decoration:none}
+.volver:hover{background:var(--crema);color:var(--burdeos)}
+main{padding-block:44px 80px;min-height:60vh}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 24px;border-radius:4px;font:inherit;font-weight:600;font-size:15px;text-decoration:none;cursor:pointer;border:1px solid transparent}
+.btn:disabled{opacity:.6;cursor:default}
+.btn-primary{background:var(--burdeos);color:var(--crema);border-color:var(--dorado)}
+.btn-primary:hover:not(:disabled){background:#7A1A2D}
+.btn-ghost{background:transparent;color:var(--crema);border-color:rgba(255,248,225,.5)}
+.btn-ghost:hover:not(:disabled){background:var(--crema);color:var(--carbon)}
+.btn-google{background:#fff;color:#1f1f1f;border-color:#dadce0}
+.btn-link{background:none;border:0;color:var(--dorado);font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:6px 0;align-self:flex-start}
+.campo{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--texto-suave)}
+.campo input{min-height:48px;padding:0 14px;border-radius:4px;border:1px solid rgba(197,160,127,.5);background:#262222;color:var(--crema);font:inherit;font-size:16px}
+.campo input:disabled{opacity:.6}
+.error{color:#FFB4A9;font-size:14px}
+.aviso{max-width:560px;margin:60px auto;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center}
+.fila{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.caja{background:var(--carbon);border:1px solid rgba(197,160,127,.3);border-radius:10px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.caja.destacar{border-color:var(--dorado);box-shadow:0 0 0 1px var(--dorado) inset}
+.caja-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.caja h2{font-size:26px}
+/* Login */
+.login{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.login-txt{display:flex;flex-direction:column;gap:16px;padding-top:12px}
+.login-txt h1{font-size:clamp(44px,6vw,76px)}
+.login-txt p{font-size:18px;color:#F0E3D2;max-width:520px}
+.beneficios{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.beneficios li{padding-left:28px;position:relative}
+.beneficios li::before{content:"";position:absolute;left:0;top:.45em;width:14px;height:14px;border-radius:50%;background:var(--dorado)}
+.login-caja h2{font-size:24px}
+/* Cuenta */
+.saludo{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.saludo h1{font-size:clamp(40px,5.5vw,64px);margin-top:6px}
+.grilla{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sellos{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:8px}
+.sello{aspect-ratio:1;border-radius:50%;border:1.5px dashed rgba(197,160,127,.6);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--texto-suave);max-width:56px}
+.sello svg{width:52%;height:52%}
+.sello.lleno{background:var(--burdeos);border:1.5px solid var(--dorado);color:var(--crema)}
+.sello.premio{border-style:solid;border-color:var(--dorado);font-size:18px}
+.cupones{display:flex;flex-direction:column;gap:10px}
+.cupon{display:flex;justify-content:space-between;align-items:center;gap:14px;background:#2A2422;border:1px dashed var(--dorado);border-radius:8px;padding:14px 16px}
+.cupon>div:first-child{display:flex;flex-direction:column;gap:2px;min-width:0;font-size:14px}
+.cupon b{font-size:16px}
+.codigo{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:18px;font-weight:700;letter-spacing:2px;color:var(--carbon);background:var(--dorado);padding:8px 12px;border-radius:6px;white-space:nowrap}
+.misiones{display:flex;flex-direction:column;gap:16px}
+.mision{display:flex;flex-direction:column;gap:6px}
+.mision p.suave{font-size:14px}
+.mision-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.mision-h span{font-size:14px;color:var(--texto-suave);white-space:nowrap}
+.barra{height:10px;border-radius:999px;background:#3A3230;overflow:hidden}
+.barra span{display:block;height:100%;background:linear-gradient(90deg,var(--burdeos),var(--dorado));border-radius:999px}
+.mision.lista .mision-h span{color:var(--ok);font-weight:700}
+.pedidos{display:flex;flex-direction:column}
+.pedido{border-bottom:1px solid rgba(197,160,127,.25)}
+.pedido:last-child{border-bottom:0}
+.pedido summary{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;cursor:pointer;list-style:none}
+.pedido summary::-webkit-details-marker{display:none}
+.pedido summary::after{content:"+";color:var(--dorado);font-size:20px;margin-left:8px}
+.pedido[open] summary::after{content:"−"}
+.pedido summary>span:first-child{display:flex;flex-direction:column;line-height:1.35;font-size:14px}
+.monto{font-family:'Marcellus',serif;font-size:20px;margin-left:auto}
+.pedido-b{display:flex;flex-direction:column;gap:4px;padding:0 0 14px;font-size:14px}
+.linea{display:flex;justify-content:space-between;gap:12px}
+.linea.desc{color:var(--ok)}
+.linea.total{border-top:1px solid rgba(197,160,127,.25);padding-top:6px;margin-top:4px;font-weight:700}
+.form-datos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-datos .acciones{grid-column:1/-1;display:flex;align-items:center;gap:14px}
+#datos-msg{font-size:14px;color:var(--ok)}
+#datos-msg.error{color:#FFB4A9}
+.pie{background:var(--burdeos);padding-block:30px;text-align:center;font-size:13px;color:#E6D5BF}
+@media (max-width:900px){
+  :root{--gutter:16px}
+  main{padding-block:28px 60px}
+  .login{grid-template-columns:1fr;gap:24px}
+  .login-txt p{font-size:16px}
+  .grilla{grid-template-columns:1fr}
+  .caja{padding:16px}
+  .form-datos{grid-template-columns:1fr}
+  .volver span{display:none}
+  .volver{padding:0 12px}
+  .sellos{gap:5px}
+  .cupon{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap top-bar">
+  <a class="brand" href="index.html" aria-label="Patiolo, inicio">
+        <svg width="30" height="35" viewBox="0 0 676 786" aria-hidden="true"><path fill="#FFF8E1" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg>
+        <span class="brand-name">PATIOLO</span>
+      </a>
+  <a class="volver" href="index.html">← <span>Volver al patio</span></a>
+</div></header>
+<main class="wrap" id="vista"><div class="aviso"><p>Cargando…</p></div></main>
+<footer class="pie">Patiolo · Patio de comidas, bar y eventos</footer>
+<script type="module" src="js/cuenta.js"></script>
+</body>
+</html>
