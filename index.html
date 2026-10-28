@@ -293,7 +293,7 @@ h2{font-size:clamp(44px,5.6vw,80px)}
     </a>
     <nav class="nav" id="nav" aria-label="Principal">
       <a href="#cocinas">Cocinas</a>
-      <a href="#agenda">Agenda</a>
+      <a href="#agenda" class="link-agenda" hidden>Agenda</a>
       <a href="#bar">Bar</a>
       <a href="#llevar">Para llevar</a>
       <a href="#reservar">Reservas</a>
@@ -313,19 +313,19 @@ h2{font-size:clamp(44px,5.6vw,80px)}
       <p>Una propuesta gastronómica multiformato con variedad de cocinas especializadas, coctelería de autor y servicio de atención personalizada en mesa.</p>
       <div class="actions">
         <a class="btn btn-primary" href="#reservar">Reservar mesa</a>
-        <a class="btn btn-ghost" href="#agenda">Ver la agenda</a>
+        <a class="btn btn-ghost link-agenda" href="#agenda" hidden>Ver la agenda</a>
       </div>
     </div>
-    <article class="next-show" aria-label="Próximo show">
-      <div class="label">Este viernes en el escenario</div>
+    <article class="next-show" id="next-show" aria-label="Próximo show" hidden>
+      <div class="label">Próximo en el escenario</div>
       <div class="show-row">
-        <div class="date"><small>VIE</small><b>[DD]</b></div>
+        <div class="date"><small></small><b></b></div>
         <div>
-          <div class="show-title">[NOMBRE DEL ARTISTA]</div>
-          <div class="muted">[GÉNERO] · [HORA]</div>
+          <div class="show-title"></div>
+          <div class="muted"></div>
         </div>
       </div>
-      <a href="#agenda" style="font-weight:600;font-size:15px">Ver toda la agenda</a>
+      <a href="#agenda" class="link-agenda" style="font-weight:600;font-size:15px" hidden>Ver toda la agenda</a>
     </article>
   </div>
 </section>
@@ -353,17 +353,14 @@ h2{font-size:clamp(44px,5.6vw,80px)}
   </div>
 </section>
 
-<section class="agenda section wrap" id="agenda" aria-labelledby="agenda-t">
+<!-- La agenda sale de la app Patiolo (menú Eventos). Sin eventos próximos, esta sección no se muestra. -->
+<section class="agenda section wrap" id="agenda" aria-labelledby="agenda-t" hidden>
   <div class="head-row">
     <h2 id="agenda-t" style="font-size:clamp(56px,6.7vw,96px)">Agenda</h2>
-    <p>Shows en vivo todos los viernes y sábados. Las mesas frente al escenario se reservan primero.</p>
+    <p>Shows en vivo en el escenario del patio. Las mesas de adelante se reservan primero.</p>
   </div>
-  <ul class="shows">
-    <li class="show"><div class="show-date"><small>VIE</small><b>[DD]</b></div><div><h3>[NOMBRE DEL SHOW]</h3><div class="kind">Música en vivo</div></div><div class="info">Desde las [HORA]<br>Entrada [PRECIO]</div><a class="btn" href="#reservar">Reservar mesa</a></li>
-    <li class="show"><div class="show-date"><small>SÁB</small><b>[DD]</b></div><div><h3>[NOMBRE DEL SHOW]</h3><div class="kind">Fiesta con DJ</div></div><div class="info">Desde las [HORA]<br>Entrada [PRECIO]</div><a class="btn" href="#reservar">Reservar mesa</a></li>
-    <li class="show"><div class="show-date"><small>VIE</small><b>[DD]</b></div><div><h3>[NOMBRE DEL SHOW]</h3><div class="kind">Stand-up</div></div><div class="info">Desde las [HORA]<br>Entrada [PRECIO]</div><a class="btn" href="#reservar">Reservar mesa</a></li>
-    <li class="show"><div class="show-date"><small>SÁB</small><b>[DD]</b></div><div><h3>[NOMBRE DEL SHOW]</h3><div class="kind">Noche de tributo</div></div><div class="info">Desde las [HORA]<br>Entrada [PRECIO]</div><a class="btn" href="#reservar">Reservar mesa</a></li>
-  </ul>
+  <ul class="shows" id="shows"></ul>
+  <template id="tpl-show"><li class="show"><div class="show-date"><small></small><b></b></div><div><h3></h3><div class="kind"></div></div><div class="info"></div><a class="btn" href="#reservar">Reservar mesa</a></li></template>
 </section>
 
 <section class="patio dark section wrap" aria-labelledby="patio-t">
@@ -698,6 +695,51 @@ h2{font-size:clamp(44px,5.6vw,80px)}
     var verBar = document.getElementById('ver-carta-bar');
     if (verBar) verBar.href = bar ? 'carta.html?local=' + encodeURIComponent(bar) : 'carta.html';
   }).catch(function(){ aviso('No pudimos cargar las cocinas en este momento. <a href="carta.html">Ver las cartas</a>'); });
+})();
+</script>
+
+<script>
+// La agenda viene de la app Patiolo (menú Eventos): artista, fecha y precio.
+// Si no hay eventos próximos, la sección entera y los enlaces a la agenda quedan ocultos.
+(function(){
+  var API = 'https://southamerica-west1-patiolo-produccion.cloudfunctions.net/eventosWeb';
+  var seccion = document.getElementById('agenda'), lista = document.getElementById('shows'), tpl = document.getElementById('tpl-show');
+  var hero = document.getElementById('next-show');
+  var enlaces = document.querySelectorAll('.link-agenda');
+  if (!seccion || !lista || !tpl) return;
+
+  function mostrar(on){
+    seccion.hidden = !on;
+    for (var i = 0; i < enlaces.length; i++) enlaces[i].hidden = !on;
+  }
+
+  fetch(API).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).then(function(d){
+    var evs = (d && d.eventos) || [];
+    if (!evs.length) { mostrar(false); return; }   // sin datos: no se muestra ningún cuadro
+
+    lista.innerHTML = '';
+    evs.forEach(function(e){
+      var n = tpl.content.firstElementChild.cloneNode(true);
+      n.querySelector('.show-date small').textContent = e.dia;
+      n.querySelector('.show-date b').textContent = e.dd;
+      n.querySelector('h3').textContent = e.artista;
+      var kind = n.querySelector('.kind');
+      if (e.tipo) kind.textContent = e.tipo; else kind.remove();
+      n.querySelector('.info').innerHTML = 'Desde las ' + e.hora + '<br>' + (e.entrada || '');
+      lista.appendChild(n);
+    });
+    mostrar(true);
+
+    // Tarjeta del hero: el próximo show.
+    if (hero) {
+      var p = evs[0];
+      hero.querySelector('.date small').textContent = p.dia;
+      hero.querySelector('.date b').textContent = p.dd;
+      hero.querySelector('.show-title').textContent = p.artista;
+      hero.querySelector('.muted').textContent = (p.tipo ? p.tipo + ' · ' : '') + p.hora + ' · ' + (p.precioCorto || '');
+      hero.hidden = false;
+    }
+  }).catch(function(){ mostrar(false); });  // si la app no responde, mejor no mostrar cuadros vacíos
 })();
 </script>
 </body>
