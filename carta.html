@@ -58,6 +58,27 @@ main{padding-block:40px 80px}
 .badge{position:absolute;top:12px;right:12px;padding:4px 10px;border-radius:999px;background:var(--dorado);color:var(--carbon);font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
 .badge.gris{background:rgba(255,248,225,.22);color:var(--crema)}
 .item:has(.badge) h3{padding-right:90px}
+.item{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.item:hover{transform:translateY(-3px);border-color:rgba(197,160,127,.65);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.foto.zoom{cursor:zoom-in}
+.foto.zoom::after{content:"+";position:absolute;right:6px;bottom:6px;width:22px;height:22px;border-radius:50%;background:rgba(26,24,24,.78);color:var(--crema);font-size:15px;font-weight:700;line-height:22px;text-align:center;opacity:.85;pointer-events:none}
+.foto.zoom:focus-visible{outline:2px solid var(--dorado);outline-offset:3px}
+
+/* Visor de fotos: se abre al tocar la foto de un producto. */
+.visor{position:fixed;inset:0;z-index:50;background:rgba(10,9,9,.96);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;opacity:0;transition:opacity .2s ease}
+.visor.abierto{display:flex}
+.visor.ver{opacity:1}
+.visor-marco{max-width:min(960px,100%);max-height:70vh;overflow:hidden;border-radius:10px}
+.visor img{max-width:100%;max-height:70vh;width:auto;border-radius:10px;cursor:zoom-in;transition:transform .25s ease}
+.visor.ampliada img{transform:scale(2.4);cursor:zoom-out}
+.visor-txt{max-width:640px;text-align:center;display:flex;flex-direction:column;gap:6px}
+.visor-txt h3{font-size:clamp(22px,3vw,30px)}
+.visor-txt p{font-size:14px;color:var(--texto-suave)}
+.visor-txt .precio{justify-content:center;padding-top:2px}
+.visor-cerrar{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(197,160,127,.5);background:rgba(26,24,24,.8);color:var(--crema);font-size:22px;line-height:1;cursor:pointer}
+.visor-cerrar:hover{background:var(--dorado);color:var(--carbon)}
+.visor-pista{font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--dorado);opacity:.8}
+@media (prefers-reduced-motion:reduce){.item,.visor,.visor img{transition:none}}
 
 .pie{background:var(--burdeos);padding-block:40px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
 .pie .nota{font-size:13px;color:#E6D5BF}
@@ -159,7 +180,8 @@ main{padding-block:40px 80px}
           var badge = it.agotado ? '<span class="badge gris">Agotado</span>'
                     : it.destacado ? '<span class="badge">Favorito</span>' : '';
           var foto = '<div class="foto"><svg class="llama" width="34" height="40" viewBox="0 0 676 786" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M293 0 L292 11 L299 24 L308 69 L307 104 L289 187 L259 249 L220 297 L195 321 L180 325 L174 315 L167 260 L158 240 L146 222 L130 206 L121 206 L110 260 L98 285 L34 377 L13 418 L1 465 L0 528 L11 573 L22 601 L42 636 L60 660 L88 688 L119 709 L145 721 L170 720 L199 710 L238 690 L266 671 L283 654 L296 651 L328 629 L406 565 L468 496 L479 433 L489 409 L498 396 L522 375 L540 364 L585 346 L593 348 L598 356 L595 391 L588 418 L578 440 L547 471 L531 481 L506 492 L482 498 L469 523 L430 577 L334 676 L271 721 L210 759 L213 766 L221 769 L292 781 L338 785 L387 783 L445 771 L500 749 L536 729 L575 701 L606 669 L646 606 L657 583 L667 551 L675 496 L669 424 L658 377 L638 326 L588 239 L583 235 L576 236 L569 254 L551 284 L525 309 L514 311 L510 305 L507 259 L496 217 L477 172 L445 121 L416 86 L384 56 L328 15Z M344 690 L346 683 L376 662 L416 641 L509 641 L542 647 L555 655 L551 663 L493 702 L460 712 L423 713 L398 710 L362 701Z M635 526 L634 530 L599 563 L567 582 L537 591 L512 594 L449 596 L443 594 L439 588 L485 543 L535 513 L566 507 L582 507 L618 513Z M265 458 L277 464 L310 511 L320 541 L318 581 L309 603 L279 654 L267 647 L251 624 L241 604 L230 562 L231 529 L240 498Z M399 379 L417 402 L429 431 L432 454 L431 488 L420 521 L408 539 L386 560 L375 566 L366 560 L359 544 L350 501 L350 465 L360 430 L368 414 L390 382Z"/></svg>' +
-            (it.foto ? '<img src="' + texto(/^https:\/\//.test(it.foto) ? it.foto : 'img/carta/' + it.foto) + '" alt="' + texto(it.nombre) + '" loading="lazy" onerror="this.remove()">' : '') + '</div>';
+            (it.foto ? '<img src="' + texto(/^https:\/\//.test(it.foto) ? it.foto : 'img/carta/' + it.foto) + '" alt="' + texto(it.nombre) + '" loading="lazy" onerror="sinFoto(this)">' : '') + '</div>';
+          if (it.foto) foto = foto.replace('<div class="foto">', '<div class="foto zoom" role="button" tabindex="0" aria-label="Ampliar foto de ' + texto(it.nombre) + '">');
           return '<article class="item' + (it.agotado ? ' agotado' : '') + '">' + badge + foto +
             '<div class="item-txt"><h3>' + texto(it.nombre) + '</h3>' +
             (it.desc ? '<p>' + texto(it.desc) + '</p>' : '') +
@@ -186,6 +208,85 @@ main{padding-block:40px 80px}
       }
     }
   }
+
+  // Si la foto no carga, la tarjeta deja de ofrecer el zoom.
+  function sinFoto(img){
+    var f = img.parentNode;
+    if (f) { f.classList.remove('zoom'); f.removeAttribute('role'); f.removeAttribute('tabindex'); f.removeAttribute('aria-label'); }
+    img.remove();
+  }
+
+  // Visor: la foto en grande, con un toque más para acercarla.
+  var visor = document.createElement('div');
+  visor.className = 'visor';
+  visor.setAttribute('role', 'dialog');
+  visor.setAttribute('aria-modal', 'true');
+  visor.innerHTML = '<button class="visor-cerrar" type="button" aria-label="Cerrar">&times;</button>' +
+    '<div class="visor-marco"><img alt=""></div>' +
+    '<div class="visor-txt"><h3></h3><p></p><div class="precio"></div></div>' +
+    '<div class="visor-pista">Toca la foto para acercar</div>';
+  document.body.appendChild(visor);
+  var vImg = visor.querySelector('img'), vTit = visor.querySelector('h3'),
+      vDesc = visor.querySelector('.visor-txt p'), vPrecio = visor.querySelector('.visor-txt .precio');
+  var ultimaFoto = null;
+
+  function abrirVisor(caja){
+    var img = caja.querySelector('img');
+    if (!img) return;
+    var art = caja.closest('.item');
+    ultimaFoto = caja;
+    vImg.src = img.src;
+    vImg.alt = img.alt;
+    vTit.textContent = art ? (art.querySelector('h3') || {}).textContent || '' : '';
+    var p = art && art.querySelector('.item-txt p');
+    vDesc.textContent = p ? p.textContent : '';
+    vDesc.style.display = p ? '' : 'none';
+    var pr = art && art.querySelector('.precio');
+    vPrecio.innerHTML = pr ? pr.innerHTML : '';
+    visor.classList.remove('ampliada');
+    visor.classList.add('abierto');
+    requestAnimationFrame(function(){ visor.classList.add('ver'); });
+    document.body.style.overflow = 'hidden';
+    visor.querySelector('.visor-cerrar').focus();
+  }
+
+  function cerrarVisor(){
+    visor.classList.remove('ver', 'ampliada');
+    document.body.style.overflow = '';
+    setTimeout(function(){ visor.classList.remove('abierto'); vImg.removeAttribute('src'); }, 200);
+    if (ultimaFoto) { ultimaFoto.focus(); ultimaFoto = null; }
+  }
+
+  $('contenido').addEventListener('click', function(e){
+    var caja = e.target.closest ? e.target.closest('.foto.zoom') : null;
+    if (caja) abrirVisor(caja);
+  });
+  $('contenido').addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var caja = e.target.closest ? e.target.closest('.foto.zoom') : null;
+    if (caja) { e.preventDefault(); abrirVisor(caja); }
+  });
+
+  // Dentro del visor: la foto acerca y aleja; el fondo y la X cierran.
+  vImg.addEventListener('click', function(e){
+    e.stopPropagation();
+    if (visor.classList.contains('ampliada')) { visor.classList.remove('ampliada'); vImg.style.transformOrigin = ''; return; }
+    var r = vImg.getBoundingClientRect();
+    vImg.style.transformOrigin = ((e.clientX - r.left) / r.width * 100) + '% ' + ((e.clientY - r.top) / r.height * 100) + '%';
+    visor.classList.add('ampliada');
+  });
+  visor.addEventListener('click', cerrarVisor);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && visor.classList.contains('abierto')) cerrarVisor(); });
+
+  // En el teléfono, deslizar hacia abajo también cierra.
+  var desdeY = null;
+  visor.addEventListener('touchstart', function(e){ desdeY = e.touches.length === 1 ? e.touches[0].clientY : null; }, { passive: true });
+  visor.addEventListener('touchend', function(e){
+    if (desdeY == null || visor.classList.contains('ampliada')) { desdeY = null; return; }
+    var t = e.changedTouches[0];
+    if (t && t.clientY - desdeY > 80) cerrarVisor();
+    desdeY = null;
+  }, { passive: true });
 
   $('contenido').innerHTML = '<div class="aviso"><p>Cargando carta…</p></div>';
   var ctl = window.AbortController ? new AbortController() : null;
