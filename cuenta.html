@@ -66,6 +66,27 @@ main{padding-block:44px 80px;min-height:60vh}
 .sello svg{width:52%;height:52%}
 .sello.lleno{background:var(--burdeos);border:1.5px solid var(--dorado);color:var(--crema)}
 .sello.premio{border-style:solid;border-color:var(--dorado);font-size:18px}
+/* Puntos */
+.pts-saldo{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:4px 0 14px}
+.pts-saldo b{font-family:'Marcellus',serif;font-size:clamp(40px,7vw,58px);line-height:1;color:var(--dorado)}
+.pts-saldo span{font-size:14px;color:var(--texto-suave)}
+.pts-premios{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.pts-premio{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border:1px solid rgba(197,160,127,.3);border-radius:8px}
+.pts-premio.puedo{border-color:var(--dorado)}
+.pts-premio>div{display:flex;flex-direction:column;gap:2px;min-width:0;font-size:14px}
+.pts-premio button{white-space:nowrap}
+.pts-acc{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.pts-acc .campo{flex:1;min-width:150px}
+.pts-regalo,.pts-movs{margin-top:14px;border-top:1px solid rgba(197,160,127,.25);padding-top:12px}
+.pts-regalo summary,.pts-movs summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--dorado);min-height:32px;display:flex;align-items:center}
+.pts-regalo .pts-acc{margin-top:10px}
+.movs{display:flex;flex-direction:column;gap:6px;margin-top:8px;font-size:14px}
+.mov{display:flex;justify-content:space-between;gap:10px}
+.mov .suma{color:#9BD3A0}
+.mov .resta{color:var(--texto-suave)}
+#pts-msg:empty{display:none}
+#pts-msg.ok{color:#9BD3A0}
+#pts-msg.error{color:#F0A6A6}
 .cupones{display:flex;flex-direction:column;gap:10px}
 .cupon{display:flex;justify-content:space-between;align-items:center;gap:14px;background:#2A2422;border:1px dashed var(--dorado);border-radius:8px;padding:14px 16px}
 .cupon>div:first-child{display:flex;flex-direction:column;gap:2px;min-width:0;font-size:14px}
