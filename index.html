@@ -431,7 +431,7 @@ h2{font-size:clamp(44px,5.6vw,80px)}
           <div class="field"><label for="r-nombre">Nombre</label><input id="r-nombre" name="nombre" type="text" autocomplete="name" placeholder="Camila Rojas" required></div>
           <div class="field"><label for="r-tel">WhatsApp</label><input id="r-tel" name="telefono" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" required></div>
         </div>
-        <div class="field"><label for="r-email">Correo (opcional)</label><input id="r-email" name="email" type="email" autocomplete="email" placeholder="camila@correo.cl"></div>
+        <div class="field"><label for="r-email">Correo</label><input id="r-email" name="email" type="email" autocomplete="email" placeholder="camila@correo.cl" required><small class="muted" style="display:block;margin-top:6px">Ahí te enviamos la confirmación de tu reserva.</small></div>
         <div class="field"><label for="r-nota">¿Algo que debamos saber? (opcional)</label><input id="r-nota" name="nota" type="text" maxlength="300" placeholder="Cumpleaños, silla para bebé, cerca del escenario…"></div>
         <div class="hp" aria-hidden="true"><label for="r-web">No completar</label><input id="r-web" name="web" type="text" tabindex="-1" autocomplete="off"></div>
         <p class="error" id="r-error" role="alert"></p>
@@ -615,6 +615,7 @@ h2{font-size:clamp(44px,5.6vw,80px)}
     var d = new FormData(fr), boton = document.getElementById('r-enviar');
     if (!est.hora) { rErr.textContent = 'Elige una hora.'; return; }
     if (!d.get('nombre').trim() || !d.get('telefono').trim()) { rErr.textContent = 'Completa tu nombre y WhatsApp.'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((d.get('email') || '').trim())) { rErr.textContent = 'Escribe tu correo: ahí te enviamos la confirmación.'; return; }
     boton.disabled = true; boton.textContent = 'Reservando…';
     var datos = { tipo: 'mesa', nombre: d.get('nombre'), telefono: d.get('telefono'), email: d.get('email'), fecha: rFecha.value, hora: est.hora, personas: est.personas, nota: d.get('nota'), web: d.get('web'), t: T_CARGA };
     api('POST', datos).then(function(r){
