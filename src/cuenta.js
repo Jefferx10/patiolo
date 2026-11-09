@@ -104,6 +104,29 @@ function tarjeta(s) {
     <div class="sellos" style="--n:${Math.min(s.cada, 10)}">${casillas}</div>
     <p>${falta === s.cada && s.tengo === 0 ? `Con <b>${s.cada} compras</b> ganas <b>${esc(s.premio)}</b>.` : `Te ${falta === 1 ? "falta <b>1 compra</b>" : `faltan <b>${falta} compras</b>`} para ganar <b>${esc(s.premio)}</b>.`}${s.minimo ? ` Cuentan las compras desde ${clp(s.minimo)}.` : ""}</p></section>`;
 }
+const MOV = { compra: "Por tu compra", canje: "Canje", regaloEnviado: "Regalo enviado", regaloRecibido: "Regalo recibido" };
+function puntos(p) {
+  if (!p) return "";
+  const vale = p.saldo * p.valor;
+  const catalogo = p.catalogo.length ? `<div class="pts-premios">${p.catalogo.map((x) => `
+      <div class="pts-premio${p.saldo >= x.costo ? " puedo" : ""}"><div><b>${esc(x.nombre)}</b>${x.texto && x.texto !== x.nombre ? `<span class="suave">${esc(x.texto)}</span>` : ""}</div>
+        <button class="btn btn-ghost chico" data-premio="${esc(x.id)}" ${p.saldo >= x.costo ? "" : "disabled"}>${x.costo} pts</button></div>`).join("")}</div>` : "";
+  const libre = `<div class="pts-acc"><label class="campo"><span>Canjear puntos por descuento</span>
+      <input id="pts-canje" type="number" inputmode="numeric" min="${p.minimo}" step="1" placeholder="Mínimo ${p.minimo}"></label>
+    <button class="btn btn-primary" id="pts-canjear" ${p.saldo >= p.minimo ? "" : "disabled"}>Canjear</button></div>`;
+  const regalo = p.regalo ? `<details class="pts-regalo"><summary>Regalar puntos a alguien</summary>
+    <p class="suave chico">Tiene que tener cuenta en Patiolo, con ese mismo correo. Los puntos salen de tu saldo al instante.</p>
+    <div class="pts-acc"><label class="campo"><span>Correo de quien los recibe</span><input id="pts-mail" type="email" autocomplete="off" placeholder="amigo@correo.cl"></label>
+      <label class="campo"><span>Puntos</span><input id="pts-regalo" type="number" inputmode="numeric" min="${p.minRegalo}" step="1" placeholder="Mínimo ${p.minRegalo}"></label>
+      <button class="btn btn-ghost" id="pts-regalar">Regalar</button></div></details>` : "";
+  const movs = p.movimientos.length ? `<details class="pts-movs"><summary>Tus movimientos</summary><div class="movs">${p.movimientos.map((m) => `
+      <div class="mov"><span>${esc(MOV[m.tipo] || "Movimiento")}${m.de ? " de " + esc(m.de) : ""}${m.para ? " a " + esc(m.para) : ""}<span class="suave"> · ${fecha(m.t)}</span></span>
+        <b class="${m.puntos < 0 ? "resta" : "suma"}">${m.puntos > 0 ? "+" : ""}${m.puntos}</b></div>`).join("")}</div></details>` : "";
+  return `<section class="caja" id="puntos"><div class="caja-h"><h2>Tus puntos</h2><span class="suave">1 punto por cada ${clp(p.cada)}</span></div>
+    <div class="pts-saldo"><b>${p.saldo}</b><span>${p.saldo === 1 ? "punto" : "puntos"}${vale ? ` · equivalen a ${clp(vale)}` : ""}</span></div>
+    <p id="pts-msg" role="status" class="chico"></p>
+    ${catalogo}${libre}${regalo}${movs}</section>`;
+}
 function cupones(cs) {
   if (!cs.length) return `<section class="caja"><div class="caja-h"><h2>Tus cupones</h2></div><p class="suave">Aún no tienes cupones. Los ganas con tu tarjeta, cumpliendo misiones o en promociones.</p></section>`;
   return `<section class="caja"><div class="caja-h"><h2>Tus cupones</h2><span class="suave">${cs.length}</span></div><div class="cupones">${cs.map((c) => `
@@ -153,10 +176,11 @@ function pintarCuenta() {
       <button class="btn btn-ghost" id="salir">Cerrar sesión</button></section>
     ${!p.telefono && !p.rut ? datos(p) : ""}
     <div class="grilla">
-      <div class="col">${D.activo ? tarjeta(D.sellos) + cupones(D.cupones) + misiones(D.misiones) : `<section class="caja"><p>Pronto lanzaremos premios para clientes. Mientras, aquí ves tus pedidos.</p></section>`}</div>
+      <div class="col">${D.activo ? puntos(D.puntos) + tarjeta(D.sellos) + cupones(D.cupones) + misiones(D.misiones) : `<section class="caja"><p>Pronto lanzaremos premios para clientes. Mientras, aquí ves tus pedidos.</p></section>`}</div>
       <div class="col">${historial()}${p.telefono || p.rut ? datos(p) : ""}</div>
     </div>`;
   $("salir").onclick = () => signOut(auth);
+  wirePuntos();
   const f = $("f-datos");
   f.onsubmit = async (e) => {
     e.preventDefault();
@@ -174,6 +198,50 @@ function pintarCuenta() {
     cargandoMas = true; mas.disabled = true; mas.textContent = "Cargando…";
     try { const r = await llamar("misPedidos", { antes: pedidos[pedidos.length - 1].cursor }); pedidos = pedidos.concat(r.pedidos); hayMas = r.mas; } catch { /* reintentar */ }
     cargandoMas = false; pintarCuenta();
+  };
+}
+
+/* Canje y regalo de puntos. Tras cada acción se recarga la cuenta para que el saldo y los cupones queden al día. */
+function wirePuntos() {
+  const caja = $("puntos");
+  if (!caja) return;
+  const msg = $("pts-msg");
+  const aviso = (t, mal) => { msg.textContent = t; msg.className = "chico " + (mal ? "error" : "ok"); };
+
+  async function accion(btn, fnNombre, datos, exito) {
+    const botones = caja.querySelectorAll("button");
+    botones.forEach((b) => (b.disabled = true));
+    aviso("Un momento…", false);
+    try {
+      const r = await llamar(fnNombre, datos);
+      D = await llamar("miCuenta");
+      pintarCuenta();
+      const m = $("pts-msg"); if (m) { m.textContent = exito(r); m.className = "chico ok"; }
+      const p = $("puntos"); if (p) p.scrollIntoView({ block: "nearest" });
+    } catch (e) {
+      botones.forEach((b) => (b.disabled = false));
+      aviso(e.message, true);
+    }
+  }
+
+  caja.querySelectorAll("[data-premio]").forEach((b) => {
+    b.onclick = () => accion(b, "canjearPuntos", { premioId: b.dataset.premio },
+      (r) => `¡Listo! Tu cupón es ${r.codigo}. Lo encuentras más abajo, en "Tus cupones".`);
+  });
+
+  const canjear = $("pts-canjear");
+  if (canjear) canjear.onclick = () => {
+    const n = parseInt($("pts-canje").value, 10);
+    if (!n) return aviso("Escribe cuántos puntos quieres canjear.", true);
+    accion(canjear, "canjearPuntos", { puntos: n }, (r) => `¡Listo! Tu cupón es ${r.codigo}. Lo encuentras más abajo, en "Tus cupones".`);
+  };
+
+  const regalar = $("pts-regalar");
+  if (regalar) regalar.onclick = () => {
+    const email = ($("pts-mail").value || "").trim(), n = parseInt($("pts-regalo").value, 10);
+    if (!email.includes("@")) return aviso("Escribe el correo de quien recibe los puntos.", true);
+    if (!n) return aviso("Escribe cuántos puntos quieres regalar.", true);
+    accion(regalar, "regalarPuntos", { email, puntos: n }, (r) => `Le regalaste ${r.puntos} puntos a ${r.para}. Te quedan ${r.saldo}.`);
   };
 }
 
