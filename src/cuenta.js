@@ -127,9 +127,97 @@ function puntos(p) {
     <p id="pts-msg" role="status" class="chico"></p>
     ${catalogo}${libre}${regalo}${movs}</section>`;
 }
+const COLORES_RUEDA = ["#8E2740", "#C5A07F", "#5F1121", "#D9BE9B", "#7A3350", "#B08C6B"];
+
+/** La rueda, dibujada en SVG. El orden de las casillas es el que manda el servidor. */
+function ruleta(r) {
+  if (!r) return "";
+  const n = r.casillas.length, paso = 360 / n, R = 140;
+  const puntas = r.casillas.map((c, i) => {
+    const a0 = (i * paso - 90) * Math.PI / 180, a1 = ((i + 1) * paso - 90) * Math.PI / 180;
+    const x0 = 150 + R * Math.cos(a0), y0 = 150 + R * Math.sin(a0);
+    const x1 = 150 + R * Math.cos(a1), y1 = 150 + R * Math.sin(a1);
+    const medio = (i * paso + paso / 2 - 90) * Math.PI / 180;
+    const tx = 150 + R * 0.62 * Math.cos(medio), ty = 150 + R * 0.62 * Math.sin(medio);
+    // En la mitad de abajo el texto quedaría de cabeza: se le da media vuelta más.
+    const medioGrados = i * paso + paso / 2;
+    const giro = medioGrados > 90 && medioGrados <= 270 ? medioGrados + 180 : medioGrados;
+    const corto = c.nombre.length > 16 ? c.nombre.slice(0, 15) + "…" : c.nombre;
+    return `<path d="M150 150 L${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R} 0 ${paso > 180 ? 1 : 0} 1 ${x1.toFixed(1)} ${y1.toFixed(1)} Z"
+        fill="${COLORES_RUEDA[i % COLORES_RUEDA.length]}" stroke="#141110" stroke-width="1.5"/>
+      <text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" transform="rotate(${giro.toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)})"
+        text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="600"
+        fill="${i % 2 ? "#241A16" : "#F8F1E7"}">${esc(corto)}</text>`;
+  }).join("");
+
+  const cuando = r.frecuencia === "compra"
+    ? (r.giros > 0 ? `Tienes ${r.giros} ${r.giros === 1 ? "giro" : "giros"}` : "Ganas un giro con tu próxima compra")
+    : r.puedeGirar ? (r.frecuencia === "diaria" ? "Tienes un giro hoy" : "Tienes un giro esta semana")
+      : `Vuelve ${r.frecuencia === "diaria" ? "mañana" : "la próxima semana"}`;
+
+  return `<section class="caja" id="ruleta"><div class="caja-h"><h2>La ruleta</h2><span class="suave">${esc(cuando)}</span></div>
+    <div class="rueda-caja">
+      <div class="rueda-flecha" aria-hidden="true"></div>
+      <svg class="rueda" id="rueda" viewBox="0 0 300 300" role="img" aria-label="Ruleta de premios">${puntas}
+        <circle cx="150" cy="150" r="20" fill="#141110" stroke="#C5A07F" stroke-width="2"/></svg>
+    </div>
+    <p id="rul-msg" role="status" class="chico"></p>
+    <button class="btn btn-primary" id="rul-girar" ${r.puedeGirar ? "" : "disabled"}>Girar</button>
+  </section>`;
+}
+
+/** Gira la rueda hasta la casilla que decidió el servidor. */
+function wireRuleta() {
+  const caja = $("ruleta");
+  if (!caja) return;
+  const boton = $("rul-girar"), rueda = $("rueda"), msg = $("rul-msg");
+  if (!boton) return;
+  let girando = false;
+
+  boton.onclick = async () => {
+    if (girando) return;
+    girando = true;
+    boton.disabled = true;
+    msg.textContent = "Girando…";
+    msg.className = "chico";
+    try {
+      const r = await llamar("girarRuleta");
+      const n = D.ruleta.casillas.length, paso = 360 / n;
+      // Cinco vueltas completas y se detiene con la casilla ganadora bajo la flecha.
+      const destino = 360 * 5 - (r.indice * paso + paso / 2);
+      rueda.style.transition = "transform 4s cubic-bezier(.17,.67,.21,1)";
+      rueda.style.transform = `rotate(${destino}deg)`;
+      await new Promise((ok) => setTimeout(ok, 4100));
+      msg.textContent = r.gano
+        ? `¡Ganaste ${r.texto || r.nombre}! Tu cupón es ${r.codigo}, lo encuentras más abajo en "Tus cupones".`
+        : `${r.nombre}. No ganaste esta vez.`;
+      msg.className = "chico " + (r.gano ? "ok" : "");
+      // Se recarga la cuenta para que aparezca el cupón y el botón quede como corresponde,
+      // pero sin repintar la rueda, que quedaría dando un salto feo.
+      D = await llamar("miCuenta");
+      cupones_refrescar();
+    } catch (e) {
+      msg.textContent = e.message;
+      msg.className = "chico error";
+      boton.disabled = false;
+    }
+    girando = false;
+  };
+}
+
+/** Repinta solo la lista de cupones, para no tocar la rueda recién girada. */
+function cupones_refrescar() {
+  const vieja = document.getElementById("cupones");
+  if (!vieja || !D) return;
+  const temp = document.createElement("div");
+  temp.innerHTML = cupones(D.cupones);
+  const nueva = temp.firstElementChild;
+  if (nueva) vieja.replaceWith(nueva);
+}
+
 function cupones(cs) {
-  if (!cs.length) return `<section class="caja"><div class="caja-h"><h2>Tus cupones</h2></div><p class="suave">Aún no tienes cupones. Los ganas con tu tarjeta, cumpliendo misiones o en promociones.</p></section>`;
-  return `<section class="caja"><div class="caja-h"><h2>Tus cupones</h2><span class="suave">${cs.length}</span></div><div class="cupones">${cs.map((c) => `
+  if (!cs.length) return `<section class="caja" id="cupones"><div class="caja-h"><h2>Tus cupones</h2></div><p class="suave">Aún no tienes cupones. Los ganas con tu tarjeta, cumpliendo misiones o en promociones.</p></section>`;
+  return `<section class="caja" id="cupones"><div class="caja-h"><h2>Tus cupones</h2><span class="suave">${cs.length}</span></div><div class="cupones">${cs.map((c) => `
     <div class="cupon"><div><b>${esc(c.nombre || c.texto)}</b><span>${esc(c.texto)}${c.minimo ? ` · compra mínima ${clp(c.minimo)}` : ""}</span>
       <span class="suave">${c.hasta ? "Vence el " + fCorta(c.hasta) : "Sin vencimiento"}</span></div><div class="codigo" aria-label="Código">${esc(c.codigo)}</div></div>`).join("")}</div>
     <p class="suave chico">En caja di tu RUT o teléfono y pide usar el cupón: se descuenta de tu boleta. Un cupón por compra.</p></section>`;
@@ -176,11 +264,12 @@ function pintarCuenta() {
       <button class="btn btn-ghost" id="salir">Cerrar sesión</button></section>
     ${!p.telefono && !p.rut ? datos(p) : ""}
     <div class="grilla">
-      <div class="col">${D.activo ? puntos(D.puntos) + tarjeta(D.sellos) + cupones(D.cupones) + misiones(D.misiones) : `<section class="caja"><p>Pronto lanzaremos premios para clientes. Mientras, aquí ves tus pedidos.</p></section>`}</div>
+      <div class="col">${D.activo ? ruleta(D.ruleta) + puntos(D.puntos) + tarjeta(D.sellos) + cupones(D.cupones) + misiones(D.misiones) : `<section class="caja"><p>Pronto lanzaremos premios para clientes. Mientras, aquí ves tus pedidos.</p></section>`}</div>
       <div class="col">${historial()}${p.telefono || p.rut ? datos(p) : ""}</div>
     </div>`;
   $("salir").onclick = () => signOut(auth);
   wirePuntos();
+  wireRuleta();
   const f = $("f-datos");
   f.onsubmit = async (e) => {
     e.preventDefault();
